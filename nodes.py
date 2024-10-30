@@ -21,7 +21,7 @@ class SendImageTypeWebSocket:
     RETURN_TYPES = ()
     FUNCTION = "send_images_type"
     OUTPUT_NODE = True
-    CATEGORY = "external_tooling"
+    CATEGORY = "does_custom_nodes"
 
     def send_images_type(self, images, format, text):
         results = []
@@ -62,7 +62,7 @@ class SendStatusMessageWebSocket:
     RETURN_TYPES = ()
     FUNCTION = "send_message"
     OUTPUT_NODE = True
-    CATEGORY = "external_tooling"
+    CATEGORY = "does_custom_nodes"
 
     def send_message(self, images, text):
         #self.prompt_queue.get_tasks_remaining()

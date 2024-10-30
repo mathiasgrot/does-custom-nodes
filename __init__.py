@@ -1,4 +1,4 @@
-from . import api, nodes
+from . import nodes
 
 NODE_CLASS_MAPPINGS = {
     "DOES_custom_nodes_SendImageTypeWebSocket": nodes.SendImageTypeWebSocket,
