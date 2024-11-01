@@ -65,11 +65,11 @@ class SendStatusMessageWebSocket:
     CATEGORY = "does_custom_nodes"
 
     def send_message(self, images, text):
-        #self.prompt_queue.get_tasks_remaining()
         server = PromptServer.instance
+        queuInfo = server.prompt_queue.get_current_queue() #get the first item in the queue to read the prompt id
         server.send_sync(
             "prompt queued",
-            { "type": text},
+            { "prompt_id":queuInfo[0][0][1], "type": text},
             server.client_id,
         )
         return {}
