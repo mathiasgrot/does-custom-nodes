@@ -4,6 +4,7 @@ import base64
 import torch
 from io import BytesIO
 from server import PromptServer, BinaryEventTypes
+from categories import icons
 
 
 #this function is added
@@ -21,7 +22,7 @@ class SendImageTypeWebSocket:
     RETURN_TYPES = ()
     FUNCTION = "send_images_type"
     OUTPUT_NODE = True
-    CATEGORY = "does_custom_nodes"
+    CATEGORY = icons.get("does_custom_nodes/Send Image Type")
 
     def send_images_type(self, images, format, text):
         results = []
@@ -62,7 +63,7 @@ class SendStatusMessageWebSocket:
     RETURN_TYPES = ()
     FUNCTION = "send_message"
     OUTPUT_NODE = True
-    CATEGORY = "does_custom_nodes"
+    CATEGORY = icons.get("does_custom_nodes/Send Message")
 
     def send_message(self, images, text):
         server = PromptServer.instance
