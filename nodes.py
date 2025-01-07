@@ -180,22 +180,24 @@ class TeachableMachine:
 
             results.append(result)
 
-            for res in result:
-                print(res)    
+            # for res in result:
+            #     print(res)    
 
         return results
     
-class CombineClassiciationResults:
+class CombineClassificationResults:
     @classmethod
     def INPUT_TYPES(s):
         return {
             "required": {
                 "outputA": ("CLASSIFICATIONS", {"forceInput":True}),
                 "outputB": ("CLASSIFICATIONS", {"forceInput":True}),
-                "outputC": ("STRING", {"default": "moondream debug"}),
+                "outputC": ("CLASSIFICATIONS", {"forceInput":True}),
+                "outputD": ("STRING",{"default": "type A"}),
                 "titleA": ("STRING", {"default": "type A"}),
                 "titleB": ("STRING", {"default": "type B"}),
-                "titleC": ("STRING", {"default": "type C"}),
+                "titleC": ("STRING", {"default": "type B"}),
+                "titleD": ("STRING", {"default": "type C"}),
             }
         }
 
@@ -204,7 +206,7 @@ class CombineClassiciationResults:
     OUTPUT_NODE = True
     CATEGORY = "🐑 does_custom_nodes"
 
-    def combine_send_results(self, outputA, outputB, outputC, titleA, titleB, titleC):
+    def combine_send_results(self, outputA, outputB, outputC, outputD, titleA, titleB, titleC, titleD):
         server = PromptServer.instance
 
         # Send the classifications to the server
@@ -213,12 +215,52 @@ class CombineClassiciationResults:
             { 
                 titleA: outputA,  # Dynamically constructed list
                 titleB: outputB,  # Dynamically constructed list
-                titleC: outputC  # temporary moondream output
+                titleC: outputC,  # Dynamically constructed list
+                titleD: outputD # temporary moondream output
             },
             server.client_id,
         )
 
         return {}
+
+class IsMaskEmpty:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "mask": ("MASK",),
+            },
+        }
+    RETURN_TYPES = ["BOOLEAN"]
+    RETURN_NAMES = ["boolean"]
+
+    FUNCTION = "main"
+    CATEGORY = "🐑 does_custom_nodes"
+
+    def main(self, mask):
+        return (torch.all(mask == 0).item(),)
+    
+
+class SwitchClassifiation:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "input1": ("STRING", {"default": "class"}),
+                "input2": ("CLASSIFICATIONS", {"forceInput":True}),
+                "skipOutput": ("BOOLEAN",)
+            },
+        }
+    
+    RETURN_TYPES = ("CLASSIFICATIONS",)
+    FUNCTION = "switch_classification"
+    CATEGORY = "🐑 does_custom_nodes"
+
+    def switch_classification(self, input1, input2, skipOutput):
+        result = []
+        if skipOutput:
+            result.append({"className": input1, "confidence": f"{0:.2f}"})
+        return (result if skipOutput else input2,)
 
 class CombineImagesNode:
     @classmethod
