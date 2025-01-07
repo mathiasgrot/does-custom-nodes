@@ -18,6 +18,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "DOES_custom_nodes_TeachableMachine": "🐑 Classify image (🍁 Maplestory Avatar)",
     "DOES_custom_nodes_CombineImagesNode": "🐑 Combine images",
     "DOES_custom_nodes_IsMaskEmpty": "🐑 Is mask empty",
-    "DOES_custom_nodes_SwitchClassifiation": "🐑 Switch Classication",
+    "DOES_custom_nodes_SwitchClassifiation": "🐑 Switch Classification",
     "DOES_custom_nodes_CombineClassificationResults": "🐑 Combine and Send Classifications",
 }

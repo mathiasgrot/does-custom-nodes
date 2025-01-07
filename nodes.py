@@ -133,7 +133,7 @@ class TeachableMachine:
     RETURN_TYPES = ("CLASSIFICATIONS",)
     FUNCTION = "classify_images"
     OUTPUT_NODE = True
-    CATEGORY = "🐑 does_custom_nodes"
+    CATEGORY = "🐑 does_custom_nodes/Classification"
 
     def classify_images(self, images, model_path, labels_path):
         # server = PromptServer.instance
@@ -204,7 +204,7 @@ class CombineClassificationResults:
     RETURN_TYPES = ()
     FUNCTION = "combine_send_results"
     OUTPUT_NODE = True
-    CATEGORY = "🐑 does_custom_nodes"
+    CATEGORY = "🐑 does_custom_nodes/Classification"
 
     def combine_send_results(self, outputA, outputB, outputC, outputD, titleA, titleB, titleC, titleD):
         server = PromptServer.instance
@@ -248,13 +248,13 @@ class SwitchClassifiation:
             "required": {
                 "input1": ("STRING", {"default": "class"}),
                 "input2": ("CLASSIFICATIONS", {"forceInput":True}),
-                "skipOutput": ("BOOLEAN",)
+                "maskIsEmpty": ("BOOLEAN",)
             },
         }
     
     RETURN_TYPES = ("CLASSIFICATIONS",)
     FUNCTION = "switch_classification"
-    CATEGORY = "🐑 does_custom_nodes"
+    CATEGORY = "🐑 does_custom_nodes/Classification"
 
     def switch_classification(self, input1, input2, skipOutput):
         result = []
