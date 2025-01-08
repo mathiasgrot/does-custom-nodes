@@ -2,7 +2,7 @@
 
 Simple nodes to make integration with external tools more clear. Added functionality to let the client know what type of image is sent.
 
-![Feature Image](images/sample.png)
+![Feature Image](docs/images/sample.png)
 
 ## Included nodes
 - Send image with type
