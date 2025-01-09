@@ -1,6 +1,6 @@
-﻿# does-custom-nodes
+﻿# ComfyUI custom nodes
 
-Simple nodes to make integration with external tools more clear. Added functionality to let the client know what type of image is sent.
+🐑 Collection of simple nodes used to integrate Comfy UI with external tools.
 
 ![Feature Image](docs/images/sample.png)
 
@@ -12,6 +12,5 @@ Simple nodes to make integration with external tools more clear. Added functiona
 - Computer vision
   - Classify image (compatible with teachable machine models)
   - Classify image using Hugging Face models
-
 - Utilities
   - Check if mask is empty

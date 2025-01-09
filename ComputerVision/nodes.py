@@ -5,9 +5,19 @@ import numpy as np
 import tensorflow as tf
 from keras.models import load_model
 import cv2
+import folder_paths
+import os
 
 from io import BytesIO
 from server import PromptServer, BinaryEventTypes
+
+
+MODELS_DIR = os.path.join(folder_paths.models_dir, "teachablemachine")
+if "teachablemachine" not in folder_paths.folder_names_and_paths:
+    current_paths = [MODELS_DIR]
+else:
+    current_paths, _ = folder_paths.folder_names_and_paths["teachablemachine"]
+folder_paths.folder_names_and_paths["teachablemachine"] = (current_paths, [".h5"])
 
 
 # had to use older version of tensorflow==2.12.1 
@@ -19,18 +29,21 @@ class TeachableMachine:
         return {
             "required": {
                 "images": ("IMAGE",),
-                "model_path": ("STRING", {"default": "path/to/keras_Model.h5"}),
-                "labels_path": ("STRING", {"default": "path/to/labels.txt"})
+                "model_file": (folder_paths.get_filename_list("teachablemachine"), ),
             }
         }
 
     RETURN_TYPES = ("CLASSIFICATIONS",)
     FUNCTION = "classify_images"
-    # OUTPUT_NODE = True
     CATEGORY = "🐑 does_custom_nodes/Classification"
 
-    def classify_images(self, images, model_path, labels_path):
+    def classify_images(self, images, model_file):
         # server = PromptServer.instance
+
+        results = []
+
+        model_path = folder_paths.get_full_path("teachablemachine", model_file)
+        labels_path = folder_paths.get_full_path("teachablemachine", os.path.splitext(model_file)[0] + ".txt")
     
         # Load the model
         model = load_model(model_path, compile=False)
@@ -38,8 +51,6 @@ class TeachableMachine:
         # Load class names
         with open(labels_path, "r") as f:
             class_names = f.readlines()
-
-        results = []
 
         for image_tensor in images:
             # Preprocess image tensor (assuming it is in a [0, 1] range)
@@ -110,15 +121,16 @@ class CombineClassificationResults:
             "classification",
             { 
                 classA: outputA,  # Dynamically constructed list
-                classB: outputB,  # Dynamically constructed list
-                classC: outputC,  # Dynamically constructed list
-                classD: outputD,  # Dynamically constructed list
+                classB: outputB,
+                classC: outputC,
+                classD: outputD,
                 classE: outputE
             },
             server.client_id,
         )
 
         return {}
+
 
 class SwitchClassifiation:
     @classmethod
@@ -133,20 +145,27 @@ class SwitchClassifiation:
     
     RETURN_TYPES = ("CLASSIFICATIONS",)
     FUNCTION = "switch_classification"
+    OUTPUT_NODE = True
     CATEGORY = "🐑 does_custom_nodes/Classification"
+
+    def check_lazy_status(self, maskIsEmpty, input1, input2):
+        if maskIsEmpty:
+            return (input1,)  # Compute input1 only
+        return (input2,)  # Compute input2 only
 
     def switch_classification(self, input1, input2, maskIsEmpty):
         return (input1 if maskIsEmpty else input2,)
     
+
 class StringToClassification:
     @classmethod
     def INPUT_TYPES(s):
         return {
             "required": {
                 "classNameA": ("STRING", {"default": "data here"}),
-                "confidenceA": ("INT", {"min": 0, "max": 1}),
+                "confidenceA": ("FLOAT", {"min": 0, "max": 1}),
                 "classNameB": ("STRING", {"default": "data here"}),
-                "confidenceB": ("INT", {"min": 0, "max": 1}),
+                "confidenceB": ("FLOAT", {"min": 0, "max": 1}),
             }
         }
     
