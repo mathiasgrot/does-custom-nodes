@@ -12,3 +12,6 @@ Simple nodes to make integration with external tools more clear. Added functiona
 - Computer vision
   - Classify image (compatible with teachable machine models)
   - Classify image using Hugging Face models
+
+- Utilities
+  - Check if mask is empty
