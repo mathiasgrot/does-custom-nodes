@@ -5,7 +5,10 @@ Simple nodes to make integration with external tools more clear. Added functiona
 ![Feature Image](docs/images/sample.png)
 
 ## Included nodes
-- Send image with type
-- Send image with message
-- Send status message
-- Classify image (compatible with teachable machine models)
+- Unity integration
+  - Send image with type
+  - Send image with message
+  - Send status message
+- Computer vision
+  - Classify image (compatible with teachable machine models)
+  - Classify image using Hugging Face models
