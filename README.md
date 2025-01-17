@@ -1,7 +1,6 @@
 ﻿# ComfyUI custom nodes
 
 🐑 Collection of simple nodes used to integrate Comfy UI with external tools.
-🐑 Simple nodes to make integration with external tools more clear. Added functionality to let the client know what type of image is sent.
 
 ![Feature Image](docs/images/sample.png)
 
