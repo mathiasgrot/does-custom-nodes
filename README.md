@@ -5,8 +5,8 @@
 ![Feature Image](docs/images/sample.png)
 
 ## Included nodes
--  External tooling
-  -  Send image with type
+- External tooling
+  - Send image with type
   - Send image with message
   - Send status message
   - Send Classifications
