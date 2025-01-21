@@ -54,8 +54,10 @@ class SendStatusMessageWebSocket:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "images": ("IMAGE",),
-                "text":  ("STRING", {"multiline": False, "default": "Message"}),
+                "messageType":  (
+                    ["prompt queued", "status", "colorData", "classification"], {"default": "status",},
+                ),
+                "data":  ("STRING", {"multiline": False, "default": "Message"}),
             }
         }
 
@@ -64,12 +66,12 @@ class SendStatusMessageWebSocket:
     OUTPUT_NODE = True
     CATEGORY = "🐑 does_custom_nodes/External_tools"
 
-    def send_message(self, images, text):
+    def send_message(self, messageType, data):
         server = PromptServer.instance
         queueInfo = server.prompt_queue.get_current_queue() #get the first item in the queue to read the prompt id
         server.send_sync(
-            "prompt queued",
-            { "prompt_id":queueInfo[0][0][1], "type": text},
+            messageType,
+            { "prompt_id":queueInfo[0][0][1], "type": data},
             server.client_id,
         )
         return {}

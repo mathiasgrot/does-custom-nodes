@@ -10,6 +10,7 @@ NODE_CLASS_MAPPINGS = {
     "DOES_custom_nodes_SwitchClassifiation": cv_nodes.SwitchClassifiation,
     "DOES_custom_nodes_StringToClassification": cv_nodes.StringToClassification,
     "DOES_custom_nodes_CombineClassificationResults": cv_nodes.CombineClassificationResults,
+    "DOES_custom_nodes_SendColorData": cv_nodes.SendColorData,
     "DOES_custom_nodes_CombineImagesNode": util_nodes.CombineImagesNode,
     "DOES_custom_nodes_IsMaskEmpty": util_nodes.IsMaskEmpty,
 }
@@ -19,9 +20,10 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "DOES_custom_nodes_SendStatusMessageWebSocket": "🐑 Send Status Message(WebSocket)",
     "DOES_custom_nodes_SendImageWithMessageSocket": "🐑 Send Image with Message(WebSocket, Base64)",
     "DOES_custom_nodes_TeachableMachine": "🐑 Classify image (🍁 Maplestory Avatar)",
-    "DOES_custom_nodes_CombineImagesNode": "🐑 Combine images",
-    "DOES_custom_nodes_IsMaskEmpty": "🐑 Is mask empty",
     "DOES_custom_nodes_SwitchClassifiation": "🐑 Switch Classification",
     "DOES_custom_nodes_StringToClassification": "🐑 String to Classification",
     "DOES_custom_nodes_CombineClassificationResults": "🐑 Combine and Send Classifications",
+    "DOES_custom_nodes_SendColorData": "🐑 Send Color Data",
+    "DOES_custom_nodes_CombineImagesNode": "🐑 Combine images",
+    "DOES_custom_nodes_IsMaskEmpty": "🐑 Is mask empty",
 }

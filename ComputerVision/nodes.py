@@ -89,47 +89,6 @@ class TeachableMachine:
             #     print(res)    
 
         return results
-    
-class CombineClassificationResults:
-    @classmethod
-    def INPUT_TYPES(s):
-        return {
-            "required": {
-                "classA": ("STRING", {"default": "class"}),
-                "outputA": ("CLASSIFICATIONS", {"forceInput":True}),
-                "classB": ("STRING", {"default": "class"}),
-                "outputB": ("CLASSIFICATIONS", {"forceInput":True}),
-                "classC": ("STRING", {"default": "class"}),
-                "outputC": ("CLASSIFICATIONS", {"forceInput":True}),
-                "classD": ("STRING", {"default": "class"}),
-                "outputD": ("CLASSIFICATIONS", {"forceInput":True}),
-                "classE": ("STRING", {"default": "class"}),
-                "outputE": ("CLASSIFICATIONS", {"forceInput":True}),
-            },
-        }
-
-    RETURN_TYPES = ()
-    FUNCTION = "combine_send_results"
-    OUTPUT_NODE = True
-    CATEGORY = "🐑 does_custom_nodes/Classification"
-
-    def combine_send_results(self, classA, outputA, classB, outputB, classC, outputC, classD, outputD, classE, outputE):
-        server = PromptServer.instance
-
-        # Send the classifications to the server
-        server.send_sync(
-            "classification",
-            { 
-                classA: outputA,  # Dynamically constructed list
-                classB: outputB,
-                classC: outputC,
-                classD: outputD,
-                classE: outputE
-            },
-            server.client_id,
-        )
-
-        return {}
 
 
 class SwitchClassifiation:
@@ -155,7 +114,7 @@ class SwitchClassifiation:
 
     def switch_classification(self, input1, input2, maskIsEmpty):
         return (input1 if maskIsEmpty else input2,)
-    
+
 
 class StringToClassification:
     @classmethod
@@ -164,6 +123,8 @@ class StringToClassification:
             "required": {
                 "classNameA": ("STRING", {"default": "data here"}),
                 "confidenceA": ("FLOAT", {"min": 0, "max": 1}),
+            },
+            "optional": {
                 "classNameB": ("STRING", {"default": "data here"}),
                 "confidenceB": ("FLOAT", {"min": 0, "max": 1}),
             }
@@ -181,3 +142,98 @@ class StringToClassification:
         results = []
         results.append(result)
         return results
+    
+
+class CombineClassificationResults:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "dataType": ("STRING", {"default": "data type"}),
+                "classA": ("STRING", {"default": "class"}),
+                "outputA": ("CLASSIFICATIONS", {"forceInput":True}),
+            },
+            "optional": {
+                "classB": ("STRING", {"default": "class"}),
+                "outputB": ("CLASSIFICATIONS", {"forceInput":True}),
+                "classC": ("STRING", {"default": "class"}),
+                "outputC": ("CLASSIFICATIONS", {"forceInput":True}),
+                "classD": ("STRING", {"default": "class"}),
+                "outputD": ("CLASSIFICATIONS", {"forceInput":True}),
+                "classE": ("STRING", {"default": "class"}),
+                "outputE": ("CLASSIFICATIONS", {"forceInput":True}),
+                "classF": ("STRING", {"default": "class"}),
+                "outputF": ("STRING", {"default": "class"}),
+                "classG": ("STRING", {"default": "class"}),
+                "outputG": ("STRING", {"default": "class"}),
+                "classH": ("STRING", {"default": "class"}),
+                "outputH": ("STRING", {"default": "class"}),
+            },
+        }
+
+    RETURN_TYPES = ()
+    FUNCTION = "combine_send_results"
+    OUTPUT_NODE = True
+    CATEGORY = "🐑 does_custom_nodes/Classification"
+
+    def combine_send_results(self, dataType, classA, outputA, classB, outputB, classC, outputC, classD, outputD, classE, outputE, classF, outputF, classG, outputG, classH, outputH):
+        server = PromptServer.instance
+
+        # Send the classifications to the server
+        server.send_sync(
+            dataType,
+            { 
+                classA: outputA,  # Dynamically constructed list
+                classB: outputB,
+                classC: outputC,
+                classD: outputD,
+                classE: outputE,
+                classF: outputF,
+                classG: outputG,
+                classH: outputH
+            },
+            server.client_id,
+        )
+
+        return {}
+    
+class SendColorData:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "dataType": (
+                    ["colorData", "classification"], {"default": "classification",},
+                ),
+                "classA": ("STRING", {"default": "class"}),
+                "outputA": ("STRING", {"default": "class"}),
+            },
+            "optional": {
+                "classB": ("STRING", {"default": "class"}),
+                "outputB": ("STRING", {"default": "class"}),
+                "classC": ("STRING", {"default": "class"}),
+                "outputC": ("STRING", {"default": "class"}),
+            },
+        }
+
+    RETURN_TYPES = ()
+    FUNCTION = "send_color_data"
+    OUTPUT_NODE = True
+    CATEGORY = "🐑 does_custom_nodes/Classification"
+
+    def send_color_data(self, dataType, classA, outputA, classB, outputB, classC, outputC):
+        server = PromptServer.instance
+
+        # Send the classifications to the server
+        server.send_sync(
+            dataType,
+            { 
+                classA: outputA,  # Dynamically constructed list
+                classB: outputB,
+                classC: outputC,
+
+            },
+            server.client_id,
+        )
+
+        return {}
