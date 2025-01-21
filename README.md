@@ -16,3 +16,7 @@
   - Dominant color analysis
 - Utilities
   - Check if mask is empty
+
+
+## Requirements
+- tensorflow==2.12.1
