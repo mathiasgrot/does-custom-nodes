@@ -6,7 +6,7 @@
 
 ## Included nodes
 -  External tooling
-  - Send image with type
+  -  Send image with type
   - Send image with message
   - Send status message
   - Send Classifications
