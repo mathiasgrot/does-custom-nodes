@@ -21,7 +21,7 @@ folder_paths.folder_names_and_paths["teachablemachine"] = (current_paths, [".h5"
 
 
 # had to use older version of tensorflow==2.12.1 
-# installed like this inside the comfy ui python environment
+# installed like this inside the comfy ui python environment, from the base comfy ui folder!
 # python_embeded\python.exe -m pip install tensorflow==2.12.1
 class TeachableMachine:
     @classmethod
@@ -191,47 +191,6 @@ class CombineClassificationResults:
                 classF: outputF,
                 classG: outputG,
                 classH: outputH
-            },
-            server.client_id,
-        )
-
-        return {}
-    
-class SendColorData:
-    @classmethod
-    def INPUT_TYPES(s):
-        return {
-            "required": {
-                "dataType": (
-                    ["colorData", "classification"], {"default": "classification",},
-                ),
-                "classA": ("STRING", {"default": "class"}),
-                "outputA": ("STRING", {"default": "class"}),
-            },
-            "optional": {
-                "classB": ("STRING", {"default": "class"}),
-                "outputB": ("STRING", {"default": "class"}),
-                "classC": ("STRING", {"default": "class"}),
-                "outputC": ("STRING", {"default": "class"}),
-            },
-        }
-
-    RETURN_TYPES = ()
-    FUNCTION = "send_color_data"
-    OUTPUT_NODE = True
-    CATEGORY = "🐑 does_custom_nodes/Classification"
-
-    def send_color_data(self, dataType, classA, outputA, classB, outputB, classC, outputC):
-        server = PromptServer.instance
-
-        # Send the classifications to the server
-        server.send_sync(
-            dataType,
-            { 
-                classA: outputA,  # Dynamically constructed list
-                classB: outputB,
-                classC: outputC,
-
             },
             server.client_id,
         )
