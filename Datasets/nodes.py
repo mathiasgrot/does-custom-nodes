@@ -44,7 +44,7 @@ class LoadDataSet:
             }
         }
 
-    RETURN_TYPES = ("DATASET", "ITERATOR")
+    RETURN_TYPES = ("DATASET",)
     FUNCTION = "load_dataset"
     OUTPUT_NODE = False
     CATEGORY = "🐑 does_custom_nodes/Utils"
@@ -57,7 +57,7 @@ class LoadDataSet:
         if useStreaming:
             iterator = iter(ds)  # Create and store dataset iterator
 
-        return (ds, iterator)  # Return dataset reference + streaming flag
+        return ((ds, iterator),)  # Return dataset reference + streaming flag
     
 class LoadDataSetFromURL:
     @classmethod
@@ -69,7 +69,7 @@ class LoadDataSetFromURL:
             }
         }
 
-    RETURN_TYPES = ("DATASET", "ITERATOR")  # Also return streaming flag
+    RETURN_TYPES = ("DATASET",) 
     FUNCTION = "load_dataset_from_url"
     OUTPUT_NODE = False
     CATEGORY = "🐑 does_custom_nodes/Utils"
@@ -82,7 +82,7 @@ class LoadDataSetFromURL:
         if useStreaming:
             iterator = iter(ds)  # Create and store dataset iterator
 
-        return (ds, iterator)  # Return dataset reference + streaming flag
+        return ((ds, iterator),)  # Return a tuple containing both dataset and iterator
 
 
 class LoadNextImage:
@@ -92,27 +92,32 @@ class LoadNextImage:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "dataset": ("DATASET", {"forceInput": True}),
+                "dataset": ("DATASET", {"forceInput": True}),  # Accept combined dataset and iterator
+                "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
             },
-            "optional": {
-                "iterator": ("ITERATOR", {"forceInput": True}),  # Accept iterator
-                "index": ("INT", {"default": 0, "min": 0}),
-            }
+            "hidden": {
+                "unique_id": "UNIQUE_ID",
+                "prompt": "PROMPT", 
+            },
         }
 
-    RETURN_TYPES = ("IMAGE", "INT")  # Also return next index for iteration
+    RETURN_TYPES = ("IMAGE",)  # Also return next index for iteration
     FUNCTION = "load_next_image"
     OUTPUT_NODE = False
     CATEGORY = "🐑 does_custom_nodes/Utils"
 
-    def load_next_image(self, dataset, iterator, index):
+    def load_next_image(self, dataset, seed, prompt, unique_id):
         """Fetches the next image efficiently."""
-
-        # If using streaming mode, convert dataset to an iterator
+        dataset, iterator = dataset  # Unpack the dataset and iterator
+ 
+        # If using streaming mode, use the iterator
         if iterator is not None:
             image = next(iterator)["image"]
+        elif seed > dataset.num_rows:
+            print("seed exceeds number of rows in dataset")
         else:
-            image = dataset[index]["image"]
+            image = dataset[seed]["image"]
+            
 
         # Convert image to a NumPy array and normalize to [0,1]
         # Define the transformation to convert a PIL image to a tensor and normalize
@@ -124,4 +129,4 @@ class LoadNextImage:
         image_tensor = transform(image.convert("RGB")).float()
         image_tensor = image_tensor.permute(1, 2, 0).unsqueeze(0)  # [H, W, C] → [1, H, W, C]
 
-        return (image_tensor, index)  # Return both tensor and next index
+        return (image_tensor,)  # Return both tensor and next index
